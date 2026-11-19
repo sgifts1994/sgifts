@@ -1,12 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronDown, SlidersHorizontal } from "lucide-react";
 import { CategoryChips } from "@/components/CategoryChips";
 import { ProductGrid } from "@/components/ProductGrid";
 import type { Category } from "@/data/products";
-import { products } from "@/data/products";
+import { isCategory, products } from "@/data/products";
 
 type CategoryId = Category | "all";
 type SortKey = "featured" | "price-asc" | "price-desc";
@@ -17,10 +17,16 @@ const sortOptions: Array<{ id: SortKey; label: string }> = [
   { id: "price-desc", label: "السعر: من الأعلى للأقل" },
 ];
 
-export function CatalogView({ initialCategory }: { initialCategory: CategoryId }) {
+export function CatalogView({ initialCategory = "all" }: { initialCategory?: CategoryId }) {
   const router = useRouter();
   const [category, setCategory] = useState<CategoryId>(initialCategory);
   const [sort, setSort] = useState<SortKey>("featured");
+
+  // الـ static export مش بيقرأ searchParams على السيرفر، فبناخد الفئة من الرابط هنا.
+  useEffect(() => {
+    const fromUrl = new URLSearchParams(window.location.search).get("category");
+    if (isCategory(fromUrl ?? undefined)) setCategory(fromUrl as Category);
+  }, []);
 
   const visibleProducts = useMemo(() => {
     const filtered =

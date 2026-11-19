@@ -2,6 +2,9 @@ import type { MetadataRoute } from "next";
 import { products } from "@/data/products";
 import { siteUrl } from "@/lib/site";
 
+// مطلوب مع output: "export" عشان sitemap.xml يتولّد كملف ثابت وقت الـ build.
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 

@@ -87,6 +87,25 @@ images: ["/images/products/candle-new-scent-1.jpg", "/images/products/candle-new
   عايزة يظهر في الرئيسية.
 - `getRelatedProducts()` بتقترح منتجات من نفس الفئة أولًا في صفحة المنتج.
 
+## النشر على GitHub Pages
+
+الموقع ثابت بالكامل (static export) وبيتنشر تلقائيًا مع كل push على `main` عن طريق
+`.github/workflows/deploy.yml`:
+
+1. الـ workflow بيشغّل `bun install` ثم `bun run build` بمتغيّر `GITHUB_PAGES=true`،
+   وبيرفع مجلد `out/` كـ artifact.
+2. `basePath` و`assetPrefix` بيتفعّلوا وقت البناء بس، عشان الموقع يخدم من
+   `https://<user>.github.io/sgifts/`. لو غيّرتي اسم الريبو، عدّلي `repoName` في
+   `next.config.ts` و`NEXT_PUBLIC_SITE_URL` في الـ workflow.
+3. محليًا `bun run dev` بيفضل على `http://localhost:3000` من غير `/sgifts`.
+
+**رقم الواتساب:** Settings → Secrets and variables → Actions → تبويب Variables → أضيفي
+`NEXT_PUBLIC_WA_NUMBER` بالصيغة الدولية بدون `+` (مثال: `201012345678`).
+
+**تنبيه:** `output: "export"` معناه مفيش سيرفر Next شغّال، فالـ API routes والـ `next/image`
+المحسّن مش متاحين. لو هتحوّلي الموقع لمتجر بسلة ودفع حقيقية، النشر على Vercel أنسب —
+ساعتها شيلي `output: "export"` من `next.config.ts`.
+
 ## الصفحات
 
 | الصفحة | المسار | المحتوى |

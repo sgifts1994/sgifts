@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { CatalogView } from "@/components/CatalogView";
-import { isCategory } from "@/data/products";
 
 export const metadata: Metadata = {
   title: "الكتالوج",
@@ -14,14 +13,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function CatalogPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ category?: string }>;
-}) {
-  const { category } = await searchParams;
-  const initialCategory = isCategory(category) ? category : "all";
-
+export default function CatalogPage() {
   return (
     <div className="mx-auto w-full max-w-6xl px-4 pt-10 sm:pt-14">
       <header className="max-w-2xl">
@@ -34,7 +26,7 @@ export default async function CatalogPage({
       </header>
 
       <div className="mt-8">
-        <CatalogView initialCategory={initialCategory} />
+        <CatalogView />
       </div>
     </div>
   );
